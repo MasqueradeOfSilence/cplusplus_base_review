@@ -6,6 +6,8 @@
 //
 
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 void passByValue(int x)
 {
@@ -45,6 +47,35 @@ int main(int argc, const char * argv[])
     passByConstReference(z);
     // enforces not modifying, but in a more efficient manner
     std::cout << "z is still " << z << " because const ref doesn't modify anything" << std::endl;
+    
+    // Old-fashioned arrays
+    int theStorageContainer[7] = {666, 69, 621, 67, 420, 444, 92};
+    std::cout << "Piss off redditors by mentioning the number " << theStorageContainer[3] << std::endl;
+    // Vectors are better
+    std::vector<int> theCoolerStorageContainer = {666, 69, 621, 67, 420, 444, 92};
+    theCoolerStorageContainer.push_back(333);
+    std::cout << "Be half-evil by mentioning the number " << theCoolerStorageContainer.at(7) << std::endl;
+    theCoolerStorageContainer.pop_back();
+    
+    // Oh hey an O(n) operation:
+    auto iterateMeHarderUwu = theCoolerStorageContainer.end();
+    std::advance(iterateMeHarderUwu, -2);
+    theCoolerStorageContainer.erase(iterateMeHarderUwu);
+    // There we go
+    
+    // Now let's remove all even numbers. The [] thing is a lamdba and you could also just define a function and pass it in.
+    theCoolerStorageContainer.erase(
+        std::remove_if(theCoolerStorageContainer.begin(), theCoolerStorageContainer.end(),
+            [](int x) { return x % 2 == 0; }),
+                                    theCoolerStorageContainer.end()
+    );
+    
+    // Now let's loop through it:
+    for (const auto& element : theCoolerStorageContainer)
+    {
+        std::cout << element << " ";
+    }
+    std::cout << std::endl;
 
     // Please review inheritance after you get through the other stuff
     
