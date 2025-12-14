@@ -8,6 +8,9 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include "Bird.hpp"
+#include "Emu.hpp"
+#include "Seagull.hpp"
 
 void passByValue(int x)
 {
@@ -23,7 +26,7 @@ void passByReference(int& y)
 
 void passByConstReference(const int& z)
 {
-    
+    std::cout << "We just passed z by const reference, so we actually cannot modify it and it's just " << z << std::endl;
 }
 
 int main(int argc, const char * argv[])
@@ -70,14 +73,46 @@ int main(int argc, const char * argv[])
                                     theCoolerStorageContainer.end()
     );
     
-    // Now let's loop through it:
+    // Now let's loop through it using a range-based for loop:
     for (const auto& element : theCoolerStorageContainer)
     {
         std::cout << element << " ";
     }
     std::cout << std::endl;
+    
+    // Now let's erase all occurrences of an element
+    std::vector<int> theCoolestStorageContainer = {360, 720, 360, 260, 360, 360};
+    theCoolestStorageContainer.erase(std::remove_if(theCoolestStorageContainer.begin(), theCoolestStorageContainer.end(),
+                   [](int x) { return x == 360; }), theCoolestStorageContainer.end());
+    
+    // Another ranged for
+    for (const auto& element : theCoolestStorageContainer)
+    {
+        std::cout << element << " " ;
+    }
+    std::cout << std::endl;
 
-    // Please review inheritance after you get through the other stuff
+    // bird class with emu subclass
+    Bird mrBird;
+    mrBird.call();
+    mrBird.fly();
+    Emu harbingerOfDeath;
+    harbingerOfDeath.call();
+    harbingerOfDeath.fly();
+    harbingerOfDeath.attack_viciously();
+    // Now a smart pointers situation:
+    std::vector<std::unique_ptr<Bird>> aviary;
+    aviary.push_back(std::make_unique<Emu>());
+    aviary.push_back(std::make_unique<Seagull>());
+    
+    std::cout << "Let us hear the birds make their great calls!" << std::endl;
+    for (auto& bird : aviary)
+    {
+        bird->call();
+    }
+    std::cout << std::endl;
+    
+    // Then: Move semantics and rule of 5
     
     return EXIT_SUCCESS;
 }
