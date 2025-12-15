@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <map>
 #include "Bird.hpp"
 #include "Emu.hpp"
 #include "Seagull.hpp"
@@ -125,7 +126,7 @@ int main(int argc, const char * argv[])
     }
     std::cout << std::endl;
     
-    // Then: Move semantics and rule of 5
+    // Move semantics:
     int a = 10;
     passAnRvalue(17);
     passAnRvalue(std::move(a));
@@ -136,6 +137,74 @@ int main(int argc, const char * argv[])
     name = "Bob";
     addToVector(vec, std::move(name));
     
+    /*
+        The Rule of 5 states that if you write a destructor, you also need to write
+        - a copy constructor
+        - a move constructor
+        - a copy assignment operator
+        - a move assignment operator
+     
+        in order to avoid valgrind hell.
+     */
+    
+    // TODO could write a test class here; otherwise, know the high-level concept
+    
+    /*
+        STL
+        - Vector
+        - Map
+        - Unordered Map (Hash Table)
+        - Deque
+        - Sort
+     */
+    
+    // Vector: See above
+    // O(1) access, O(1) amortized insert/delete at end, O(n) insert/delete at middle, O(n) search
+    
+    // Map: (red-black tree underneath) -- this is ordered and a bit slower than its unordered counterpart
+    std::cout << "now let's talk about ages including how old your mom is, cuz she's really old" << std::endl;
+    std::map<std::string, int> ages;
+    ages["Your Mom"] = 567; // INSERT: O(log n)
+    ages["Your Dad"] = 61;
+    int theAgeOfYourMom = ages["Your Mom"]; // ACCESS: O(log n)
+    std::cout << "Your mom is age " << theAgeOfYourMom << std::endl;
+    ages["Satan"] = 666;
+    ages.erase("Satan"); // DELETE: O(log n)
+    ages["Aaaaaaron"] = 21;
+    ages["zzzzzzzzzzyzyx"] = 37;
+    
+    // Expected order: Alphabetical, as it sorts by key
+    for (auto& [name, age] : ages)
+    {
+        std::cout << name << ": Age " << age << std::endl;
+    }
+    
+    // Unordered map uses a Hash Table
+    std::unordered_map<std::string, int> momentsContemplatingTheEphemeralityOfExistence;
+    momentsContemplatingTheEphemeralityOfExistence["Marge"] = 37; // Insert: O(1) average, O(n) worst
+    momentsContemplatingTheEphemeralityOfExistence["Big Jimmy"] = 3;
+    momentsContemplatingTheEphemeralityOfExistence["Yoseph"] = 1;
+    momentsContemplatingTheEphemeralityOfExistence["Selena"] = 14;
+    momentsContemplatingTheEphemeralityOfExistence["Doogles"] = 4;
+    
+    int momentsThatDooglesHasContemplatedTheEphemeralityOfExistence = momentsContemplatingTheEphemeralityOfExistence["Doogles"];
+    // Access: That was an O(1) operation also, but could be O(n) worst
+    std::cout << "doogles has contemplated the ephemerality of existence " << momentsThatDooglesHasContemplatedTheEphemeralityOfExistence << " times " << std::endl;
+    
+    std::cout << "doogles would like to forget" << std::endl;
+    momentsContemplatingTheEphemeralityOfExistence.erase("Doogles");
+    
+    // now his memories are forgotten in O(1) deletion time (on average; worst case O(n)
+    for (auto& [name, moments] : momentsContemplatingTheEphemeralityOfExistence)
+    {
+        std::cout << name << " has contemplated " << moments << " times " << std::endl;
+    }
+    // other examples include linear probing, quadratic probing, Robin Hood, cuckoo
+    // no aliens are probing tho
+    
+    // okay now it's deque time:
+    
+    // then sort:
     
     // STL basics
     // AND: Threading stuff.
