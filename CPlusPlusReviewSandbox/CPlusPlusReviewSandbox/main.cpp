@@ -8,6 +8,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <string>
 #include "Bird.hpp"
 #include "Emu.hpp"
 #include "Seagull.hpp"
@@ -20,6 +21,7 @@ void passByValue(int x)
 
 void passByReference(int& y)
 {
+    // this is an lvalue btw
     y = 67;
     std::cout << "We just passed y by reference, and inside here, it's " << y << std::endl;
 }
@@ -27,6 +29,17 @@ void passByReference(int& y)
 void passByConstReference(const int& z)
 {
     std::cout << "We just passed z by const reference, so we actually cannot modify it and it's just " << z << std::endl;
+}
+
+void passAnRvalue(int&& a)
+{
+    std::cout << "Rvalue passed: " << a << std::endl;
+}
+
+void addToVector(std::vector<std::string>& vec, std::string&& str)
+{
+    std::cout << "Adding to vector: " << str << std::endl;
+    vec.push_back(str);
 }
 
 int main(int argc, const char * argv[])
@@ -113,6 +126,20 @@ int main(int argc, const char * argv[])
     std::cout << std::endl;
     
     // Then: Move semantics and rule of 5
+    int a = 10;
+    passAnRvalue(17);
+    passAnRvalue(std::move(a));
+    
+    std::string name = "Alice";
+    std::vector<std::string> vec;
+    addToVector(vec, std::move(name));
+    name = "Bob";
+    addToVector(vec, std::move(name));
+    
+    
+    // STL basics
+    // AND: Threading stuff.
+    // AND: Start Linux.
     
     return EXIT_SUCCESS;
 }
