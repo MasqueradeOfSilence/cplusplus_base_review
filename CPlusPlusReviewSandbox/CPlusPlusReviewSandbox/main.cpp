@@ -10,9 +10,12 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <thread>
+#include <mutex>
 #include "Bird.hpp"
 #include "Emu.hpp"
 #include "Seagull.hpp"
+std::mutex mtx;
 
 void passByValue(int x)
 {
@@ -41,6 +44,18 @@ void addToVector(std::vector<std::string>& vec, std::string&& str)
 {
     std::cout << "Adding to vector: " << str << std::endl;
     vec.push_back(str);
+}
+
+// an arithmetic progression
+void addNumbersInRange(int& sum, int start, int end)
+{
+    int localSum = 0;
+    for (int i = start; i < end; i++)
+    {
+        localSum += i;
+    }
+    std::lock_guard<std::mutex> lock(mtx);
+    sum += localSum;
 }
 
 int main(int argc, const char * argv[])
@@ -233,7 +248,14 @@ int main(int argc, const char * argv[])
     std::cout << std::endl;
     
     // AND: Threading stuff.
-    // AND: Start Linux.
+    int total = 0;
+    std::thread thread1(addNumbersInRange, std::ref(total), 0, 50);
+    std::thread thread2(addNumbersInRange, std::ref(total), 50, 100);
+    thread1.join();
+    thread2.join();
+    // join() means that the main thread waits for them to complete before continuing, as opposed to detach()
+    std::cout << "in the end, the total is " << total << std::endl;
+    // AND: Start Linux. NEXT PROGRAM/PROJECT
     
     return EXIT_SUCCESS;
 }
