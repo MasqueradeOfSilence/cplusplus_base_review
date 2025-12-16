@@ -221,10 +221,17 @@ int main(int argc, const char * argv[])
     foodsIWishIWasEatingRightNow.pop_back();
     foodsIWishIWasEatingRightNow.pop_front();
     
+    // then sort: C++ sort is a hybrid method of complexity O(log n).
+    // Let us start with ascending
+    std::vector<std::string> aspectsOfYourMom = {"large", "gargantuan", "ancient", "smelly", "strange"};
+    // sort it alphabetically
+    std::sort(aspectsOfYourMom.begin(), aspectsOfYourMom.end());
+    for (std::string aspect : aspectsOfYourMom)
+    {
+        std::cout << "your mom is " << aspect << std::endl;
+    }
+    std::cout << std::endl;
     
-    // then sort:
-    
-    // STL basics
     // AND: Threading stuff.
     // AND: Start Linux.
     
