@@ -203,6 +203,24 @@ int main(int argc, const char * argv[])
     // no aliens are probing tho
     
     // okay now it's deque time:
+    std::deque<std::string> foodsIWishIWasEatingRightNow = {"spam", "pizza", "dole whip", "cinammon roll", "double bacon cheeseburger", "molten lava cake"};
+    // Insertion O(1) amortized at either end:
+    foodsIWishIWasEatingRightNow.push_front("orange chicken");
+    foodsIWishIWasEatingRightNow.push_back("bacon breakfast burrito");
+    
+    // Middle position iterator: Insertion in the middle is O(n)
+    std::deque<std::string>::iterator middle_it = foodsIWishIWasEatingRightNow.begin() + foodsIWishIWasEatingRightNow.size() / 2;
+    foodsIWishIWasEatingRightNow.insert(middle_it, "spaghetti and meatballs");
+    
+    for (std::string element : foodsIWishIWasEatingRightNow)
+    {
+        std::cout << "I sure wish I was eating " << element << " right now " << std::endl;
+    }
+    
+    // Deletion O(1) amortized
+    foodsIWishIWasEatingRightNow.pop_back();
+    foodsIWishIWasEatingRightNow.pop_front();
+    
     
     // then sort:
     
