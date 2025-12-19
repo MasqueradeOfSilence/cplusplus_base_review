@@ -54,6 +54,7 @@ void addNumbersInRange(int& sum, int start, int end)
     {
         localSum += i;
     }
+    // lock before you do anything with the sum
     std::lock_guard<std::mutex> lock(mtx);
     sum += localSum;
 }
